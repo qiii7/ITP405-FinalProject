@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Http; // solve the 'Class "App\Http\Controllers\H
 class ArtController extends Controller
 {
 
+    public function index() {
+        return view('art/index');
+    }
+
+
     public function searchArt(Request $request) {
         // // 1. validation
         // $request->validate([
@@ -33,7 +38,7 @@ class ArtController extends Controller
         $totalPages = $getTotalNumObject->pagination->total_pages;
 
         // just return - no redirect() because the db not processing the user input
-        return view("searchArt", [
+        return view("art/searchArt", [
             'results' => $responseObject,
             'numOfResults' => $getTotalNumObject,
             'currentPage' => $currentPage,
@@ -42,6 +47,6 @@ class ArtController extends Controller
     }
 
     public function searchExhibition(Request $request) {
-        return view("searchExhibition");
+        return view("art/searchExhibition");
     }
 }

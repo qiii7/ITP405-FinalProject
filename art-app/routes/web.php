@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\ArtController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 
-Route::get('/', function () {
-    return view('main');
-});
+Route::get('/', [ArtController::class, 'index'])->name('search.index');
 
 Route::get('/register', [RegistrationController::class, 'index'])->name('registration.index');
 Route::post('/register', [RegistrationController::class, 'register'])->name('registration.create');

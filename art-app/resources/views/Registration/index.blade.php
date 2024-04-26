@@ -8,7 +8,7 @@
     <form method="post" action="{{ route('registration.create') }}">
         @csrf
         <div class="mb-3">
-            <label class="form-label" for="name">Full name</label>
+            <label class="form-label" for="name">Username</label>
             <input type="text" id="name" name="name" class="form-control">
         </div>
         <div class="mb-3">
