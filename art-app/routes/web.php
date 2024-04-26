@@ -1,22 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArtController;
+use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('main');
 });
 
+Route::get('/searchArt', [ArtController::class, 'searchArt'])->name('artworks.search');
+Route::get('/searchExhibition', [ArtController::class, 'searchExhibition'])->name('exhibitions.search');
 
-Route::get('/search', function() {
-    $term = urlencode('monet');
-    $response = Http::get("https://api.artic.edu/api/v1/artworks/search?q={$term}&fields=id,title,image_id");
-    // $response = Http::get("https://api.artic.edu/api/v1/artworks/search?q={$term}");
-    // https://api.artic.edu/api/v1/artworks/27992?fields=id,title,image_id
-
-    $responseObject = $response->Object();
-    // dd($responseObject);
-
-    return view("artworks/results", [
-        'results' => $responseObject,
-    ]);
-});
+// Route::get('/displayComments', [CommentController::class, 'showForm'])->name('comments.display');
