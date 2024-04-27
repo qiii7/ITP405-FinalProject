@@ -11,17 +11,20 @@ use App\Http\Controllers\ProfileController;
 
 Route::get('/', [ArtController::class, 'index'])->name('search.index');
 
+// user
 Route::get('/register', [RegistrationController::class, 'index'])->name('registration.index');
 Route::post('/register', [RegistrationController::class, 'register'])->name('registration.create');
-
 Route::get('/login', [AuthController::class, 'loginForm'])->name('login'); // intentionally named "login" per "auth" middleware
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 
+// comments (post back to the display specific page)
+Route::post('/artworks/search/{id}', [ArtController::class, 'store'])->name('comment.store');
 
-Route::get('/searchArt', [ArtController::class, 'searchArt'])->name('artworks.search');
+// artworks
+Route::get('/artworks/search/{id}', [ArtController::class, 'specificDisplay'])->name('artwork.display');
+Route::get('/artworks/search', [ArtController::class, 'searchArt'])->name('artworks.index');
 Route::get('/searchExhibition', [ArtController::class, 'searchExhibition'])->name('exhibitions.search');
 
-// Route::get('/displayComments', [CommentController::class, 'showForm'])->name('comments.display');
 
 
 // login allows

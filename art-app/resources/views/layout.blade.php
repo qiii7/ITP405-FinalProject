@@ -27,7 +27,7 @@
                 </li>
             @else
                 <li class="nav-item">
-                    <a href="{{ route('registration.index') }}" class="nav-link">Search</a>
+                    <a href="{{ route('search.index') }}" class="nav-link">Search</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('registration.index') }}" class="nav-link">Register</a>

@@ -136,26 +136,32 @@
 @endsection
 
 @section('main')
-<div id="search-form">
-    <h1>Search Artworks</h1>
+    <div id="search-form">
+        <h1>Search Artworks</h1>
 
-        <form action="{{ route('artworks.search') }}" method="GET">
+        <form action="{{ route('artworks.index') }}" method="GET">
             <label for="search">Enter your search query:</label><br>
-            <input type="text" id="search" name="user-query" placeholder="Monet" required><br>
+            <input type="text" id="search" name="user-query" placeholder="Monet" value="{{ old('user-query') }}" required><br>
 
             <button type="submit">Search</button>
+
+            @error('user-query')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </form>
     </div>
 
+
     @if ($numOfResults->pagination->total == 0)
         <div id="no-result">
-            <p>No results found.</p>
+            <p>No results found for {{ $query }}.</p>
         </div>
 
     @else
         <div class="pagination">
             <p>
-                Displaying {{ count($results->data) }} out of {{ $numOfResults->pagination->total }}
+                Displaying results for "{{ $query }}"<br>
+                Available restuls: {{ $numOfResults->pagination->total }}
             </p>
 
             <!-- Previous page link -->
@@ -186,17 +192,17 @@
                 @foreach ($results->data as $result)
                 <li>
                     <div class="info">
-                        <h2>{{ $result->title }} by <em>{{ $result->artist_title }}</em> ({{ $result->date_end }})</h2>
-                        <p>Classification: {{ $result->classification_title }}</p>
-                        <p>Place of Origin: {{ $result->place_of_origin }}</p>
+                        <!-- <a href="{{ route('artwork.display', ['id' => $result->id, 'query' => $query ]) }}"> -->
+                            <a href="{{ route('artwork.display', ['id' => $result->id]) }}">
+                            <h2>{{ $result->title }} by <em>{{ $result->artist_title }}</em> ({{ $result->date_end }})</h2>
+                        </a>
                     </div>
                     
                     <div class="image-container">
                         <img src="https://www.artic.edu/iiif/2/{{ $result->image_id }}/full/843,/0/default.jpg" alt="{{ $result->title }}">
-                    </img>
+                    </img> 
+                    <br><hr>
 
-                    <br><br>
-                    <hr>
                 </li>
                 @endforeach
             </ul>
