@@ -26,9 +26,12 @@
             float:left;
         }
         #comments {
-            border: 1px solid black;
+            /* border: 1px solid black; */
 
             margin-top: 30px;
+        }
+        .comment-container {
+            border: 1px solid black;
         }
     </style>
 @endsection
@@ -54,24 +57,31 @@
         </div>
 
         <div id="comment-section">
-            <form action="{{ route('comment.store', ['id' => $id]) }}" method="POST">
+            <!-- to the comment page -->
+            <form action="{{ route('comment.index', [ 'id' => $id ]) }}" method="GET">
                 @csrf
                 <!-- hide artwork id here -->
                 <input type="hidden" name="artworkId" value="{{ $id }}">
                 <!-- hide the api object here -->
-                <input type="hidden" name="responseObject" value="{{ $result }}">
+                <input type="hidden" name="responseObject" value="{{ json_encode($result) }}">
 
-                <label for="comment">Make a comment/note:</label><br>
-                <textarea id="comment" name="comment" rows="4" cols="50" required>{{ old('comment') }}</textarea><br>
-                <button type="submit">Submit</button>
+                <button type="submit">Comment</button>
             </form>
 
             <div id="comments">
                 <h2>Comments</h2>
-                <p>get data from db</p>
-
-                <p>No comments yet. Be the first one to comment!</p>
+                @if (count($comments) == 0)
+                    <p>No comments yet. Be the first one to comment!</p>
+                @else
+                    @foreach ($comments as $comment)
+                        <div class="comment-container">
+                            <p>{{ $comment->created_at }}</p>
+                            <p>from '{{ $comment->user->name }}': {{ $comment->comment }}</p>
+                        </div>
+                    @endforeach
+                @endif
             </div>
+
         </div>
 
 @endsection

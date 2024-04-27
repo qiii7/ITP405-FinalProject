@@ -9,6 +9,8 @@ class Artwork extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     public function comments() {
         return $this->hasMany(Comment:: class, 'artwork_id', 'id');
     }

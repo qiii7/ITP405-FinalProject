@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http; // solve the 'Class "App\Http\Controllers\Http" not found' bug
 
+use Auth;
+use App\Models\User;
+use App\Models\Artwork;
+use App\Models\Comment;
+
+
 class ArtController extends Controller
 {
 
@@ -61,53 +67,18 @@ class ArtController extends Controller
             return $response->Object();
         });
 
-        // 2) display artwork's comments, if any
-        
+        // 2) get comments, if any (READ)
+        $comments = Comment::with(['user'])->where('artwork_id', $artworkId)->orderBy('created_at', 'desc')->get();
 
         return view('art/artwork', [
             'id' => $artworkId,
             'result' => $artworkInfoObject,
-            // 'query' => $query,
+            'comments' => $comments,
         ]);
     }
 
 
-    // once the submit button of comment page is clicked...
-    public function store(Request $request) {
-        // 0) retrieve hidden data
-        $artworkId = $request->input('artworkId');
-        $responseObject = $request->input('responseObject');
-        $user = Auth::user();
-        $username = $user->username;
-
-        // 1) store the artwork into Artwork (INSERT)
-        $artwork = new Artwork();
-        $artwork->title = $responseObject->data->title;
-        $artwork->artist = $responseObject->data->artist_title;
-        $artwork->classification_title = $responseObject->data->classification_title;
-        $artwork->place_of_origin = $responseObject->data->place_of_origin;
-        $artwork->medium_display = $responseObject->data->medium_display;
-        $artwork->save();
-
-
-        // 2) store the comment into Comment
-        // a. validation
-        $request->validate([
-            'comment' => 'required',
-        ]);
-
-        // b. INSERT
-        $comment = new Comment();
-        $comment->artwork_id = $artworkId;
-        $comment->user_id = $username;
-        $comment->comment = $request->input('comment');
-        $comment->save();
-
-        return redirect()
-            ->route('artwork.display', [ 'id' => $artworkId ])
-            ->with('success', "You've successfully made a comment.");
-    }
-
+    
 
     public function searchExhibition(Request $request) {
         return view("art/searchExhibition");
