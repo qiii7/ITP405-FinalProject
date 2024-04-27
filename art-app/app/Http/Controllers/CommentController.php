@@ -64,9 +64,13 @@ class CommentController extends Controller
             ->with('success', "You've successfully made a comment.");
     }
 
+    public function edit($artwork_id) {
+        
+    }
+
 
     public function update($artwork_id, Request $request) {
-        
+
     }
 
 }

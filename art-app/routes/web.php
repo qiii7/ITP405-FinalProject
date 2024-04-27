@@ -25,6 +25,9 @@ Route::get('/artworks/search/{id}/comment', [CommentController:: class, 'index']
 Route::post('/artworks/search/{id}', [CommentController::class, 'update'])->name('comment.update');
 Route::get('/artworks/search/{id}/edit', [CommentController::class, 'edit'])->name('comment.edit');
 
+// delete comments
+Route::post('/artworks/search/{id}', [CommentController::class, 'delete'])->name('comment.delete');
+
 // artworks
 Route::get('/artworks/search/{id}', [ArtController::class, 'specificDisplay'])->name('artwork.display');
 Route::get('/artworks/search', [ArtController::class, 'searchArt'])->name('artworks.index');

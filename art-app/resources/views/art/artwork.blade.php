@@ -75,8 +75,39 @@
                 @else
                     @foreach ($comments as $comment)
                         <div class="comment-container">
-                            <p>{{ $comment->created_at }}</p>
-                            <p>from '{{ $comment->user->name }}': {{ $comment->comment }}</p>
+
+                            @if (Auth::check() && Auth::user()->email === $comment->user->email)
+                                <!-- edit comment -->
+                                <form action="{{ route('comment.edit', [ 'id' => $id ]) }}" method="GET">
+                                    @csrf
+                                    <!-- hide artwork id here -->
+                                    <input type="hidden" name="artworkId" value="{{ $id }}">
+                                    <!-- hide the api object here -->
+                                    <input type="hidden" name="responseObject" value="{{ json_encode($result) }}">
+
+                                    <button type="submit">Edit</button>
+                                </form>
+
+                                <!-- delete comment -->
+                                <form action="{{ route('comment.delete', [ 'id' => $id ]) }}" method="GET">
+                                    @csrf
+                                    <!-- hide artwork id here -->
+                                    <input type="hidden" name="artworkId" value="{{ $id }}">
+                                    <!-- hide the api object here -->
+                                    <input type="hidden" name="responseObject" value="{{ json_encode($result) }}">
+
+                                    <button type="submit">Delete</button>
+                                </form>
+
+                                <!-- actual comments -->
+                                <p>{{ $comment->created_at }}</p>
+                                <p>from '{{ $comment->user->name }}': {{ $comment->comment }}</p>
+
+                            @else
+                                <!-- actual comments -->
+                                <p>{{ $comment->created_at }}</p>
+                                <p>from '{{ $comment->user->name }}': {{ $comment->comment }}</p>
+                            @endif
                         </div>
                     @endforeach
                 @endif
