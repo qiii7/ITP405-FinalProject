@@ -7,6 +7,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BookmarkController;
 
 
 Route::get('/', [ArtController::class, 'index'])->name('search.index');
@@ -17,11 +18,15 @@ Route::post('/register', [RegistrationController::class, 'register'])->name('reg
 Route::get('/login', [AuthController::class, 'loginForm'])->name('login'); // intentionally named "login" per "auth" middleware
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 
+// bookmarks
+Route::get('/profile/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+Route::post('/artworks/search/{id}/bookmark', [BookmarkController::class, 'store'])->name('bookmark.store');
+
 // edit comments
 Route::post('/artworks/search/{id}/update', [CommentController::class, 'update'])->name('comment.update');
 Route::get('/artworks/search/{id}/edit', [CommentController::class, 'edit'])->name('comment.edit');
 
-// make comments (post back to the display specific page)
+// make comments (post -> back to the display specific page)
 Route::post('/artworks/search/{id}/store', [CommentController::class, 'store'])->name('comment.store');
 Route::get('/artworks/search/{id}/comment', [CommentController:: class, 'index'])->name('comment.index');
 

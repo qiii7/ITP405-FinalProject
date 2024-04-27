@@ -13,7 +13,7 @@
         <ul class="nav d-flex justify-content-end">
             @if (Auth::check())
                 <li class="nav-item">
-                    <a href="{{ route('search.index') }}" class="nav-link">Search</a>
+                    <a href="{{ route('artworks.index') }}" class="nav-link">Search</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('profile.index') }}" class="nav-link">Profile</a>
@@ -27,7 +27,7 @@
                 </li>
             @else
                 <li class="nav-item">
-                    <a href="{{ route('search.index') }}" class="nav-link">Search</a>
+                    <a href="{{ route('artworks.index') }}" class="nav-link">Search</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('registration.index') }}" class="nav-link">Register</a>

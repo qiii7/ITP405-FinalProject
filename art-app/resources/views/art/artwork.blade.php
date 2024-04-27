@@ -45,6 +45,18 @@
 
         <!-- id,title,image_id,artist_title,date_end,classification_title,place_of_origin -->
         <div id="info-section">
+            
+            <!-- to store as bookmarked -->
+            <form action="{{ route('bookmark.store', [ 'id' => $result->data->id ]) }}" method="POST">
+                @csrf
+                <!-- hide artwork id here -->
+                <input type="hidden" name="artworkId" value="{{ $id }}">
+                <!-- hide the api object here -->
+                <input type="hidden" name="responseObject" value="{{ json_encode($result) }}">
+
+                <button type="submit">Bookmark It!</button>
+            </form>
+
             <h1>{{ $result->data->title }}</h1>
             <p>{{ $result->data->artist_title }}</p>
             <p>{{ $result->data->date_end }}</p>

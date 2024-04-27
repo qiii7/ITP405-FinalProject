@@ -42,6 +42,7 @@ class CommentController extends Controller
             $artwork->artist = $responseObject->data->artist_title;
             $artwork->classification_title = $responseObject->data->classification_title;
             $artwork->place_of_origin = $responseObject->data->place_of_origin;
+            $artwork->image_id = $responseObject->data->image_id;
             $artwork->save();
         }
 

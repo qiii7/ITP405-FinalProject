@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('artist');
             $table->string('classification_title');
             $table->string('place_of_origin');
+            $table->string('image_id');
 
         });
     }
