@@ -8,6 +8,7 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 
+
 Route::get('/', [ArtController::class, 'index'])->name('search.index');
 
 Route::get('/register', [RegistrationController::class, 'index'])->name('registration.index');

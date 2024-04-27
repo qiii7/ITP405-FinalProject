@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Artworks</title>
+@extends('layout')
 
+@section('title', 'search art')
+
+@section('styles')
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -134,13 +132,12 @@
             margin-left: auto;
             margin-right: auto;
         }
-
     </style>
-</head>
-<body>
+@endsection
 
-    <div id="search-form">
-        <h1>Search Artworks</h1>
+@section('main')
+<div id="search-form">
+    <h1>Search Artworks</h1>
 
         <form action="{{ route('artworks.search') }}" method="GET">
             <label for="search">Enter your search query:</label><br>
@@ -205,6 +202,5 @@
             </ul>
         </div>
     @endif
-    
-</body>
-</html>
+    </form>
+@endsection
