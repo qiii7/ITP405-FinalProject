@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('artworks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('artist_title');
+            $table->string('artist');
             $table->string('classification_title');
             $table->string('place_of_origin');
             $table->string('medium_display');

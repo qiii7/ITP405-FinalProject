@@ -71,14 +71,23 @@ class ArtController extends Controller
         ]);
     }
 
+
     // once the submit button of comment page is clicked...
     public function store(Request $request) {
         // 0) retrieve hidden data
         $artworkId = $request->input('artworkId');
+        $responseObject = $request->input('responseObject');
         $user = Auth::user();
         $username = $user->username;
 
-        // 1) store the artwork into Artwork
+        // 1) store the artwork into Artwork (INSERT)
+        $artwork = new Artwork();
+        $artwork->title = $responseObject->data->title;
+        $artwork->artist = $responseObject->data->artist_title;
+        $artwork->classification_title = $responseObject->data->classification_title;
+        $artwork->place_of_origin = $responseObject->data->place_of_origin;
+        $artwork->medium_display = $responseObject->data->medium_display;
+        $artwork->save();
 
 
         // 2) store the comment into Comment

@@ -58,6 +58,8 @@
                 @csrf
                 <!-- hide artwork id here -->
                 <input type="hidden" name="artworkId" value="{{ $id }}">
+                <!-- hide the api object here -->
+                <input type="hidden" name="responseObject" value="{{ $result }}">
 
                 <label for="comment">Make a comment/note:</label><br>
                 <textarea id="comment" name="comment" rows="4" cols="50" required>{{ old('comment') }}</textarea><br>
