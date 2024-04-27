@@ -13,14 +13,17 @@ use App\Models\Bookmark;
 class BookmarkController extends Controller
 {
     public function index() {
-        $userObject = Auth::user();
-
-        // display info about this artwork, including comments
-        $bookmarks = Bookmark::with('artwork.comments')->get(); // EAGER LOADING!
+        // 0) target the logged-in user
+        $currentUser = Auth::user(); // this returns the logged in user
+        // dd($currentUser->id);
+        $currentUserId = $currentUser->id;
+        
+        // 1) get the corresponding bookmarks of that user: display info about bookmarked artworks (including comments)
+        $bookmarks = Bookmark::with('artwork.comments')->where('user_id', $currentUserId)->get(); // EAGER LOADING!
         // dd($bookmarks);
 
         return view('bookmark/index', [
-            'user' => $userObject,
+            'user' => $currentUser,
             'bookmarks' => $bookmarks,
         ]);
     }
