@@ -8,6 +8,10 @@
         .bookmark, .comments {
             border: 1px solid black;
         }
+        .bookmark {
+            width: 700px;
+            margin: 30px;
+        }
         .comment {
             border: 1px solid red;
         }
@@ -38,12 +42,19 @@
 
                 <div class="comments">
                     <h2>comments:</h2>
-                    @foreach ($bookmark->artwork->comments as $comment)
-                        <div class="comment">
-                            <p>{{ $comment->comment }}</p>
-                            <p>by {{ $comment->user->name }}</p>
-                        </div>
-                    @endforeach
+                    @if (count($bookmark->artwork->comments) == 0)
+                        <p>there is no comment for this artwork yet. be the first to 
+                            <a href="{{ route('artwork.display', ['id' => $bookmark->artwork_id]) }}">comment</a>!
+                            <!-- to the comment page -->
+                        </p>
+                    @else
+                        @foreach ($bookmark->artwork->comments as $comment)
+                            <div class="comment">
+                                <p>{{ $comment->comment }}</p>
+                                <p>by {{ $comment->user->name }}</p>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         @endforeach

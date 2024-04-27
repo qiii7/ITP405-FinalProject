@@ -9,7 +9,11 @@
 @endsection
 
 @section('main')
-    <form action="{{ route('comment.store', ['id' => $id]) }}" method="POST">
+
+    <a href="{{ route('artwork.display', [ 'id' => $id ]) }}">back</a>
+
+
+    <form action="{{ route('comment.store', ['id' => $id] ) }}" method="POST">
         @csrf
         <!-- hide artwork id here -->
         <input type="hidden" name="artworkId" value="{{ $id }}">
