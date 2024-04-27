@@ -1,22 +1,34 @@
 <!DOCTYPE html>
 @extends('layout')
 
-@section('title', 'specific artwork! (customized to artwork title)')
+@section('title', $result->data->title)
 
 @section('styles')
     <style>
-        #info {
-            width: 500px;
+        #info-section {
+            border: 1px solid black;
+            width: 600px;
             height: auto;
+            padding: 20px;
 
             float: left;
         }
+        #info-section img{
+            width: 300px;
+        }
 
-        #comment {
-            width: 400px;
+        #comment-section {
+            border: 1px solid black;
+            width: 600px;
             height: auto;
+            padding: 20px;
 
             float:left;
+        }
+        #comments {
+            border: 1px solid black;
+
+            margin-top: 30px;
         }
     </style>
 @endsection
@@ -29,7 +41,7 @@
 
 
         <!-- id,title,image_id,artist_title,date_end,classification_title,place_of_origin -->
-        <div id="info">
+        <div id="info-section">
             <h1>{{ $result->data->title }}</h1>
             <p>{{ $result->data->artist_title }}</p>
             <p>{{ $result->data->date_end }}</p>
@@ -38,16 +50,26 @@
                     
             <div class="image-container">
                 <img src="https://www.artic.edu/iiif/2/{{ $result->data->image_id }}/full/843,/0/default.jpg" alt="{{ $result->data->title }}">
-            </img> 
+            </div>
         </div>
 
-        <div id="comment">
-            <form action="{{ route('comments.store') }}" method="POST">
+        <div id="comment-section">
+            <form action="{{ route('comment.store', ['id' => $id]) }}" method="POST">
                 @csrf
-                <label for="comment">Add a comment:</label><br>
-                <textarea id="comment" name="comment" rows="4" cols="50" required></textarea><br>
+                <!-- hide artwork id here -->
+                <input type="hidden" name="artworkId" value="{{ $id }}">
+
+                <label for="comment">Make a comment/note:</label><br>
+                <textarea id="comment" name="comment" rows="4" cols="50" required>{{ old('comment') }}</textarea><br>
                 <button type="submit">Submit</button>
             </form>
+
+            <div id="comments">
+                <h2>Comments</h2>
+                <p>get data from db</p>
+
+                <p>No comments yet. Be the first one to comment!</p>
+            </div>
         </div>
 
 @endsection

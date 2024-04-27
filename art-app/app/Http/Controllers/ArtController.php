@@ -52,6 +52,7 @@ class ArtController extends Controller
 
     public function specificDisplay($artworkId) {
 
+        // 1) display artwork's specifics
         $cacheKey = "aic-api-$artworkId";
         $seconds = 60;
         $artworkInfoObject = Cache::remember($cacheKey, $seconds, function() use ($artworkId) {
@@ -60,6 +61,9 @@ class ArtController extends Controller
             return $response->Object();
         });
 
+        // 2) display artwork's comments, if any
+        
+
         return view('art/artwork', [
             'id' => $artworkId,
             'result' => $artworkInfoObject,
@@ -67,9 +71,36 @@ class ArtController extends Controller
         ]);
     }
 
+    // once the submit button of comment page is clicked...
+    public function store(Request $request) {
+        // 0) retrieve hidden data
+        $artworkId = $request->input('artworkId');
+        $user = Auth::user();
+        $username = $user->username;
+
+        // 1) store the artwork into Artwork
+
+
+        // 2) store the comment into Comment
+        // a. validation
+        $request->validate([
+            'comment' => 'required',
+        ]);
+
+        // b. INSERT
+        $comment = new Comment();
+        $comment->artwork_id = $artworkId;
+        $comment->user_id = $username;
+        $comment->comment = $request->input('comment');
+        $comment->save();
+
+        return redirect()
+            ->route('artwork.display', [ 'id' => $artworkId ])
+            ->with('success', "You've successfully made a comment.");
+    }
+
 
     public function searchExhibition(Request $request) {
-
         return view("art/searchExhibition");
     }
 }
