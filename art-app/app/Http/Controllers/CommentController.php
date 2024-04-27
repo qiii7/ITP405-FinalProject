@@ -24,6 +24,7 @@ class CommentController extends Controller
 
 
     public function store(Request $request) {
+
         // 0) retrieve hidden data
         $artworkId = $request->input('artworkId');
         $jsonString = request()->input('responseObject');
@@ -64,13 +65,60 @@ class CommentController extends Controller
             ->with('success', "You've successfully made a comment.");
     }
 
-    public function edit($artwork_id) {
-        
+
+    public function edit($artwork_id, Request $request) {
+        // display form again
+        // get the old input
+        $commentId = $request->input('commentId');
+        $commentBody = Comment::where('id', $commentId)->first()->comment;
+
+        // retrieve hidden data
+        $artworkId = $request->input('artworkId');
+        $jsonString = request()->input('responseObject');
+        $responseObject = json_decode($jsonString); // decode from JSON
+
+
+        return view('comment/edit', [
+            'commentId' => $commentId,
+            'commentBody' => $commentBody,
+            'id' => $artworkId,
+            'responseObject' => $responseObject,
+        ]);
     }
 
 
     public function update($artwork_id, Request $request) {
+        // validate
+        $request->validate([
+            'comment' => 'required',
+        ]);
 
+        // get data
+        $commentBody = $request->input('comment');
+        $commentId = $request->input('commentId');
+        $comment = Comment::find($commentId);
+
+        $artworkId = $request->input('artworkId');
+
+        // UPDATE to DB
+        $comment->comment = $commentBody;
+        $comment->save();
+
+        return redirect()
+            ->route('artwork.display', ['id' => $artworkId]) 
+            ->with('success', "You've successfully edited your comment.");
+    }
+
+    
+    public function delete($commentId, Request $request) {
+        $artworkId = $request->input('artworkId');
+
+        $theComment = Comment::find($commentId);
+        $theComment->delete();
+
+        return redirect()
+            ->route('artwork.display', ['id' => $artworkId ])
+            ->with('success', "You've deleted your comment.");
     }
 
 }

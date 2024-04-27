@@ -17,21 +17,20 @@ Route::post('/register', [RegistrationController::class, 'register'])->name('reg
 Route::get('/login', [AuthController::class, 'loginForm'])->name('login'); // intentionally named "login" per "auth" middleware
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 
-// make comments (post back to the display specific page)
-Route::post('/artworks/search/{id}', [CommentController::class, 'store'])->name('comment.store');
-Route::get('/artworks/search/{id}/comment', [CommentController:: class, 'index'])->name('comment.index');
-
 // edit comments
-Route::post('/artworks/search/{id}', [CommentController::class, 'update'])->name('comment.update');
+Route::post('/artworks/search/{id}/update', [CommentController::class, 'update'])->name('comment.update');
 Route::get('/artworks/search/{id}/edit', [CommentController::class, 'edit'])->name('comment.edit');
 
+// make comments (post back to the display specific page)
+Route::post('/artworks/search/{id}/store', [CommentController::class, 'store'])->name('comment.store');
+Route::get('/artworks/search/{id}/comment', [CommentController:: class, 'index'])->name('comment.index');
+
 // delete comments
-Route::post('/artworks/search/{id}', [CommentController::class, 'delete'])->name('comment.delete');
+Route::post('/artworks/search/{id}/delete', [CommentController::class, 'delete'])->name('comment.delete');
 
 // artworks
 Route::get('/artworks/search/{id}', [ArtController::class, 'specificDisplay'])->name('artwork.display');
 Route::get('/artworks/search', [ArtController::class, 'searchArt'])->name('artworks.index');
-Route::get('/searchExhibition', [ArtController::class, 'searchExhibition'])->name('exhibitions.search');
 
 
 

@@ -58,14 +58,14 @@
 
         <div id="comment-section">
             <!-- to the comment page -->
-            <form action="{{ route('comment.index', [ 'id' => $id ]) }}" method="GET">
+            <form action="{{ route('comment.index', [ 'id' => $result->data->id ]) }}" method="GET">
                 @csrf
                 <!-- hide artwork id here -->
                 <input type="hidden" name="artworkId" value="{{ $id }}">
                 <!-- hide the api object here -->
                 <input type="hidden" name="responseObject" value="{{ json_encode($result) }}">
 
-                <button type="submit">Comment</button>
+                <button type="submit">Add Comment</button>
             </form>
 
             <div id="comments">
@@ -78,10 +78,12 @@
 
                             @if (Auth::check() && Auth::user()->email === $comment->user->email)
                                 <!-- edit comment -->
-                                <form action="{{ route('comment.edit', [ 'id' => $id ]) }}" method="GET">
+                                <form action="{{ route('comment.edit', [ 'id' => $result->data->id ]) }}" method="GET">
                                     @csrf
+                                    <!-- hide comment id here -->
+                                    <input type="hidden" name="commentId" value="{{ $comment->id }}">
                                     <!-- hide artwork id here -->
-                                    <input type="hidden" name="artworkId" value="{{ $id }}">
+                                    <input type="hidden" name="artworkId" value="{{ $result->data->id }}">
                                     <!-- hide the api object here -->
                                     <input type="hidden" name="responseObject" value="{{ json_encode($result) }}">
 
@@ -89,14 +91,14 @@
                                 </form>
 
                                 <!-- delete comment -->
-                                <form action="{{ route('comment.delete', [ 'id' => $id ]) }}" method="GET">
+                                <form action="{{ route('comment.delete', [ 'id' => $comment->id ]) }}" method="POST">
                                     @csrf
                                     <!-- hide artwork id here -->
-                                    <input type="hidden" name="artworkId" value="{{ $id }}">
+                                    <input type="hidden" name="artworkId" value="{{ $result->data->id }}">
                                     <!-- hide the api object here -->
                                     <input type="hidden" name="responseObject" value="{{ json_encode($result) }}">
 
-                                    <button type="submit">Delete</button>
+                                    <button onclick="return confirmDelete()" type="submit">Delete</button>
                                 </form>
 
                                 <!-- actual comments -->
@@ -114,5 +116,11 @@
             </div>
 
         </div>
+
+        <script>
+            function confirmDelete() {
+                return confirm("Are you sure you want to delete this comment?");
+            }
+        </script>
 
 @endsection
