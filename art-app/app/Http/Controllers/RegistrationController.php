@@ -20,7 +20,7 @@ class RegistrationController extends Controller
         $request->validate([
             'name' => 'required|max:20',
             'email' => 'required|unique:users,email',
-            'password' => 'required',
+            'password' => 'required|min:7|max:25',
         ]);
 
         // INSERT

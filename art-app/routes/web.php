@@ -39,9 +39,6 @@ Route::get('/artworks/search/{id}', [ArtController::class, 'specificDisplay'])->
 Route::get('/artworks/search', [ArtController::class, 'searchArt'])->name('artworks.index');
 
 
-
-// login allows
-// 1)
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
