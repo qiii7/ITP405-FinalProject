@@ -134,21 +134,30 @@
         }
         #random-artwork {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            width: 900px;
+            text-align: center;
+
+            width: 800px;
+            height: auto;
             margin-left: auto;
             margin-right: auto;
-
-            text-align: center;
+            margin-bottom: 40px;
         }
         #random-image {
             width: 400px;
-            float: left;
         }
         #random-info {
-            width: 400px;
+            width: 300px;
             float: left;
             margin-left: 20px;
+        }
+        .clearfloat {
+            clear: both;
+        }
+        .random-content {
+            display: flex;
+            align-items: center;
         }
     </style>
 @endsection
@@ -172,17 +181,21 @@
     @if (empty($query))
         <!-- random artwork -->
         <div id="random-artwork">
-            <div id="random-image">
-                <img src="https://www.artic.edu/iiif/2/{{ $randomArtwork->data->image_id }}/full/843,/0/default.jpg" alt="{{ $randomArtwork->data->title }}">
-            </div>
-
-            <div id="random-info">
-                <p>{{ $randomArtwork->data->title }} by {{ $randomArtwork->data->artist_title }}</p>
-                <p>{{ $randomArtwork->data->date_end  }}</p>
-                <p>Classification: {{ $randomArtwork->data->classification_title  }}</p>
-                <p>Place of Origin: {{ $randomArtwork->data->place_of_origin  }}</p>
+            <h4>a random artwork for the day</h4>
+            <div class="random-content">
+                <div id="random-image">
+                    <img src="https://www.artic.edu/iiif/2/{{ $randomArtwork->data->image_id }}/full/843,/0/default.jpg" alt="{{ $randomArtwork->data->title }}">
+                </div>
+                
+                <div id="random-info">
+                    <p>{{ $randomArtwork->data->title }} by {{ $randomArtwork->data->artist_title }}</p>
+                    <p>{{ $randomArtwork->data->date_end  }}</p>
+                    <p>Classification: {{ $randomArtwork->data->classification_title  }}</p>
+                    <p>Place of Origin: {{ $randomArtwork->data->place_of_origin  }}</p>
+                </div>
             </div>
         </div>
+
 
     @else
         @if ($numOfResults->pagination->total == 0)
