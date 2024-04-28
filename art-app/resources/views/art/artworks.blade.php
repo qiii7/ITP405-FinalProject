@@ -52,17 +52,20 @@
         }
 
         button {
-            margin: 25px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
+            /* margin: 25px; */
+            padding: 7px 14px;
+            background-color: rgba(245, 193, 39, 0.6);
+            /* color: #fff; */
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            color: white;
+
+            margin-top: -2x;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: rgba(245, 193, 39, 0.8);
         }
 
         ul {
@@ -71,16 +74,19 @@
         }
 
         li {
-            margin-bottom: 20px;
+            margin-bottom: -10px;
         }
+        
         /* Pagination container */
         .pagination {
-            width: 800px;
+            width: 400px;
+            height: auto;
+            /* border: 1px solid black; */
             text-align: center;
             margin-left: auto;
             margin-right: auto;
-            display: inline-block;
-            margin: 20px 0;
+            display: block;
+            /* margin: 20px 0; */
         }
 
         /* Pagination links */
@@ -94,8 +100,8 @@
 
         /* Active page link */
         .pagination a.active {
-        background-color: #4CAF50;
-        color: white;
+            background-color: #4CAF50;
+            color: white;
         }
 
         /* Hover effect on links */
@@ -109,7 +115,6 @@
         cursor: default;
         color: #aaa;
         }
-
 
         img {
             max-width: 100%;
@@ -209,6 +214,7 @@
                 <p>
                     Available results for "{{ $query }}": {{ $numOfResults->pagination->total }}
                 </p>
+                <p>Displaying {{ $results->pagination->limit }}</p>
             </div>
 
             <div id="results">
@@ -230,33 +236,11 @@
                             <input type="hidden" name="user-query" value="{{ $query }}">
                             <button type="submit">>></button>
                         </form>
-
-                        <hr>
                     </li>
                     @endforeach
                 </ul>
             </div>
-            <div class="pagination">
-                <!-- Previous page link -->
-                <a href="{{ $currentPage > 1 ? route('your.route.name', ['page' => $currentPage - 1]) : '#' }}" class="{{ $currentPage == 1 ? 'disabled' : '' }}">&laquo;</a>
-
-                <!-- Loop through each page -->
-                @for ($page = 1; $page <= $totalPages; $page++)
-                    <a href="{{ route('your.route.name', ['page' => $page]) }}" @if ($page == $currentPage) class="active" @endif>{{ $page }}</a>
-                @endfor
-
-                <!-- Next page link -->
-                <a href="{{ $currentPage < $totalPages ? route('your.route.name', ['page' => $currentPage + 1]) : '#' }}" class="{{ $currentPage == $totalPages ? 'disabled' : '' }}">&raquo;</a>
-
-
-                <!-- <a href="#" class="disabled">&laquo;</a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">&raquo;</a> -->
-            </div>
+            
         @endif
     @endif
 @endsection

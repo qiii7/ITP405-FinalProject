@@ -61,7 +61,12 @@
             margin-top: 30px;
         }
         #all-bookmarks {
+            /* border: 1px solid black; */
+            width: 600px;
 
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
         }
         .delete-btn {
             position: absolute; /* Set position to absolute */

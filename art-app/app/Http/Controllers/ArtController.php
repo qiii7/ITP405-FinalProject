@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Artwork;
 use App\Models\Comment;
 
+use Illuminate\Pagination\Paginator;
 
 class ArtController extends Controller
 {
@@ -43,10 +44,16 @@ class ArtController extends Controller
         // results
         $cacheKeyOfResults = "aic-api-$term";
         $responseObject = Cache::remember($cacheKeyOfResults, $seconds, function() use ($term) {
-            $response = Http::get("https://api.artic.edu/api/v1/artworks/search?q={$term}&limit=10&fields=id,title,image_id,artist_title,date_end,classification_title,place_of_origin");
+            $response = Http::get("https://api.artic.edu/api/v1/artworks/search?q={$term}&limit=12&fields=id,title,image_id,artist_title,date_end,classification_title,place_of_origin");
             return $response->Object();
         });
-        
+
+        // $page = Paginator::resolveCurrentPage('page');
+        // $perPage = 10; // Number of items per page
+
+        // $results = collect($responseObject['data']); // Assuming 'data' contains the array of results
+        // $paginatedResults = new Paginator($results->forPage($page, $perPage), count($results), $perPage, $page, ['path' => Paginator::resolveCurrentPath()]);
+
         // total num of results
         $cacheKeyOfTotalNum = "aic-api-$term-totalNum";
         $totalNumObject = Cache::remember($cacheKeyOfTotalNum, $seconds, function() use ($term) {
@@ -70,6 +77,7 @@ class ArtController extends Controller
             'numOfResults' => $totalNumObject,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,
+            // 'paginatedResults' => $paginatedResults,
         ]);
     }
 

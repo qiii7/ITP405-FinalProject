@@ -32,7 +32,7 @@
                 </li>
 
                 <li>
-                    <form method="post" action="{{ route('auth.logout') }}">
+                    <form id="logout-form" method="post" action="{{ route('auth.logout') }}">
                         @csrf
                         <button type="submit" class="btn btn-link">Logout</button>
                     </form>
