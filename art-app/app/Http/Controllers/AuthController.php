@@ -26,7 +26,7 @@ class AuthController extends Controller
         ]);
 
         if ($loginWasSuccessful) {
-            return redirect()->route('profile.index');
+            return redirect()->route('artworks.index');
         } else {
             return redirect()->route('login')->with('error', 'Invalid credentials.')->withInput($request->only('email')); // flash data
         }

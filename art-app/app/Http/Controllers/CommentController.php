@@ -49,7 +49,7 @@ class CommentController extends Controller
         // 2) store the comment into Comment
         // a. validation
         $request->validate([
-            'comment' => 'required',
+            'comment' => 'required|min:5',
         ]);
 
         // b. INSERT
@@ -91,7 +91,7 @@ class CommentController extends Controller
     public function update($artwork_id, Request $request) {
         // validate
         $request->validate([
-            'comment' => 'required',
+            'comment' => 'required|min:5',
         ]);
 
         // get data

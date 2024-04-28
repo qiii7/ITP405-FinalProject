@@ -9,8 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookmarkController;
 
-// main page
-Route::get('/', [ArtController::class, 'index'])->name('search.index');
+// Route::get('/', [ArtController::class, 'index'])->name('search.index');
 
 // user
 Route::get('/register', [RegistrationController::class, 'index'])->name('registration.index');

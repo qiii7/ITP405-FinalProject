@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 @extends('layout')
 
-@section('title', "editing the comments of " . $responseObject->data->title)
+@section('title', "editing the comment of " . $responseObject->data->title)
 
 @section('styles')
     <style>
@@ -22,7 +22,10 @@
         <input type="hidden" name="responseObject" value="{{ json_encode($responseObject) }}">
 
         <label for="comment">Make a comment/note:</label><br>
-        <textarea id="comment" name="comment" rows="4" cols="50" required>{{ $commentBody }}</textarea><br>
+        <textarea id="comment" name="comment" rows="4" cols="50" required>{{ old('comment', $commentBody) }}</textarea><br>
+        @error('comment')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
         
         <button type="submit">Update</button>
     </form>

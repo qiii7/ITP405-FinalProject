@@ -15,10 +15,6 @@ use App\Models\Comment;
 class ArtController extends Controller
 {
 
-    public function index() {
-        return view('art/index');
-    }
-
     public function searchArt(Request $request) {
         // 0) randomize
         $attempts = 0;
@@ -47,7 +43,7 @@ class ArtController extends Controller
         // results
         $cacheKeyOfResults = "aic-api-$term";
         $responseObject = Cache::remember($cacheKeyOfResults, $seconds, function() use ($term) {
-            $response = Http::get("https://api.artic.edu/api/v1/artworks/search?q={$term}&limit=8&fields=id,title,image_id,artist_title,date_end,classification_title,place_of_origin");
+            $response = Http::get("https://api.artic.edu/api/v1/artworks/search?q={$term}&limit=10&fields=id,title,image_id,artist_title,date_end,classification_title,place_of_origin");
             return $response->Object();
         });
         

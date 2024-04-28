@@ -14,7 +14,7 @@
         #search-form, #results {
             max-width: 800px;
             margin: 20px auto;
-            padding: 20px;
+            padding: 30px;
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -148,7 +148,7 @@
             width: 400px;
         }
         #random-info {
-            width: 300px;
+            width: 380px;
             float: left;
             margin-left: 20px;
         }
@@ -164,7 +164,7 @@
 
 @section('main')
     <div id="search-form">
-        <h1>Search Artworks</h1>
+        <h1>Artwork Search</h1>
 
         <form action="{{ route('artworks.index') }}" method="GET">
             <label for="search">Enter your search query:</label><br>
@@ -181,17 +181,18 @@
     @if (empty($query))
         <!-- random artwork -->
         <div id="random-artwork">
-            <h4>a random artwork for the day</h4>
+            <h4>Artwork of the Day (randomized)</h4>
             <div class="random-content">
                 <div id="random-image">
                     <img src="https://www.artic.edu/iiif/2/{{ $randomArtwork->data->image_id }}/full/843,/0/default.jpg" alt="{{ $randomArtwork->data->title }}">
                 </div>
                 
                 <div id="random-info">
-                    <p>{{ $randomArtwork->data->title }} by {{ $randomArtwork->data->artist_title }}</p>
+                    <p>{{ $randomArtwork->data->title }}</p>
+                    <p>{{ $randomArtwork->data->artist_title }}</p>
                     <p>{{ $randomArtwork->data->date_end  }}</p>
-                    <p>Classification: {{ $randomArtwork->data->classification_title  }}</p>
-                    <p>Place of Origin: {{ $randomArtwork->data->place_of_origin  }}</p>
+                    <p>{{ $randomArtwork->data->classification_title  }}</p>
+                    <p>{{ $randomArtwork->data->place_of_origin  }}</p>
                 </div>
             </div>
         </div>
@@ -206,9 +207,36 @@
         @else
             <div class="pagination">
                 <p>
-                    Available restults for "{{ $query }}": {{ $numOfResults->pagination->total }}
+                    Available results for "{{ $query }}": {{ $numOfResults->pagination->total }}
                 </p>
+            </div>
 
+            <div id="results">
+                <ul>
+                    <!-- id,title,image_id,artist_title,date_end,classification_title,place_of_origin -->
+                    @foreach ($results->data as $result)
+                    <li>
+                        <div class="info">
+                            <p>{{ $result->title }} by <em>{{ $result->artist_title }}</em> ({{ $result->date_end }})</p>
+                        </div>
+                        
+                        <div class="image-container">
+                            <img src="https://www.artic.edu/iiif/2/{{ $result->image_id }}/full/843,/0/default.jpg" alt="{{ $result->title }}">
+                        </img> 
+
+                        <form action="{{ route('artwork.display', ['id' => $result->id]) }}" method="GET">
+                            @csrf
+                            <!-- hide user-query here -->
+                            <input type="hidden" name="user-query" value="{{ $query }}">
+                            <button type="submit">>></button>
+                        </form>
+
+                        <hr>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="pagination">
                 <!-- Previous page link -->
                 <a href="{{ $currentPage > 1 ? route('your.route.name', ['page' => $currentPage - 1]) : '#' }}" class="{{ $currentPage == 1 ? 'disabled' : '' }}">&laquo;</a>
 
@@ -228,34 +256,6 @@
                 <a href="#">4</a>
                 <a href="#">5</a>
                 <a href="#">&raquo;</a> -->
-
-            </div>
-
-            <div id="results">
-                <ul>
-                    <!-- id,title,image_id,artist_title,date_end,classification_title,place_of_origin -->
-                    @foreach ($results->data as $result)
-                    <li>
-                        <div class="info">
-                            <h2>{{ $result->title }} by <em>{{ $result->artist_title }}</em> ({{ $result->date_end }})</h2>
-
-                            <form action="{{ route('artwork.display', ['id' => $result->id]) }}" method="GET">
-                                @csrf
-                                <!-- hide user-query here -->
-                                <input type="hidden" name="user-query" value="{{ $query }}">
-
-                                <button type="submit">see more>>></button>
-                            </form>
-                        </div>
-                        
-                        <div class="image-container">
-                            <img src="https://www.artic.edu/iiif/2/{{ $result->image_id }}/full/843,/0/default.jpg" alt="{{ $result->title }}">
-                        </img> 
-                        <br><hr>
-
-                    </li>
-                    @endforeach
-                </ul>
             </div>
         @endif
     @endif
