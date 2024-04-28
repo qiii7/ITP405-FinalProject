@@ -22,6 +22,14 @@
 @endsection
 
 @section('main')
+
+    <!-- display success message -->
+    @if (session('success'))
+        <div class="alert alert-success" style="padding: 15px;" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <p>Hello, {{ $user->name }}.</p>
 
     @if (count($bookmarks) == 0)
@@ -29,6 +37,18 @@
     @else
         @foreach ($bookmarks as $bookmark)
             <div class="bookmark">
+                <!-- delete bookmarks -->
+                <form action="{{ route('bookmark.delete') }}" method="POST">
+                    @csrf
+                    <!-- hide comment id here -->
+                    <input type="hidden" name="bookmarkId" value="{{ $bookmark->id }}">
+
+                    <!-- hide artwork id here -->
+                    <input type="hidden" name="artworkId" value="{{ $bookmark->artwork->id }}">
+
+                    <button onclick="return confirmDelete()" type="submit">Delete</button>
+                </form>
+
                 <p>bookmarked in {{ $bookmark->created_at }} </p>
                 <h1>{{ $bookmark->artwork->title }}</h1>
                 <p>{{ $bookmark->artwork->artist_title }}</p>
@@ -59,5 +79,11 @@
             </div>
         @endforeach
     @endif
+
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this comment?");
+        }
+    </script>
     
 @endsection

@@ -36,7 +36,7 @@ class BookmarkController extends Controller
         $user = Auth::user();
         $email = $user->email;
 
-        // 1) INSERT artworks
+        // 1) INSERT artworks  (check duplication)
         $existingArtwork = Artwork::where('id', $artworkId)->exists(); // check existing data, avoid repetition -> boolean
         if (!$existingArtwork) {
             $artwork = new Artwork();
@@ -49,26 +49,40 @@ class BookmarkController extends Controller
             $artwork->save();
         }
 
-        // 2) INSERT bookmarks
-        $bookmark = new Bookmark();
-        $bookmark->user_id = $user->id;
-        $bookmark->artwork_id = $artworkId;
-        $bookmark->save();
+        // 2) INSERT bookmarks (check duplication)
+        $existingBookmark = Bookmark::where('artwork_id', $artworkId)->exists();
+        $alreadyBookmarked = false;
+        if (!$existingBookmark) {
+            $bookmark = new Bookmark();
+            $bookmark->user_id = $user->id;
+            $bookmark->artwork_id = $artworkId;
+            $bookmark->save();
+        } else {
+            $alreadyBookmarked = true;
+        }
 
         return redirect()
             ->route('artwork.display', ['id' => $artwork_id])
-            ->with('success', "You've bookmarked xxx.");
+            ->with('bookmark-success', "You've bookmarked \"" . $responseObject->data->title . "\"")
+            ->with('alreadyBookmarked', $alreadyBookmarked);
     }
 
-    public function delete(){
-        $bookmarkId = $request->input('bookmarkId');
 
-        $theBookmark = Bookmark::find($bookmarkId);
+    public function delete(Request $request){
+        // $artworkId = $request->input('artworkId');
+        // $artwork = Artwork::where('artwork_id', $artworkId);
+        // dd($artwork);
+
+        $bookmarkId = $request->input('bookmarkId');
+        $theBookmark = Bookmark::with('artwork')->find($bookmarkId);
+        // dd($theBookmark->artwork->title);
+        $artworkTitle = $theBookmark->artwork->title;
+
         $theBookmark->delete();
 
         return redirect()
-            ->route('bookmark.index')
-            ->with('success', "You've deleted {{ $artwork->title }} from your bookmarks.");
+            ->route('bookmarks.index')
+            ->with('success', "You've deleted \"" . $artworkTitle . "\" from your bookmarks.");
     }
 
 }

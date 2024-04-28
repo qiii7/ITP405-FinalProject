@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('artist');
-            $table->string('classification_title');
-            $table->string('place_of_origin');
-            $table->string('image_id');
+            $table->string('classification_title')->nullable();
+            $table->string('place_of_origin')->nullable();
+            $table->string('image_id')->nullable();
 
         });
     }

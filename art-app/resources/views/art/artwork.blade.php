@@ -38,6 +38,25 @@
 
 @section('main')
 
+        <!-- display success message -->
+        @if (session('success'))
+            <div class="alert alert-success" style="padding: 15px;" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <!-- target 'bookmark' message / if already bookmarked -->
+        @if (session('bookmark-success') && !session('alreadyBookmarked'))
+            <div class="alert alert-success" style="padding: 15px;" role="alert">
+                {{ session('bookmark-success') }}
+            </div>
+        @elseif (session('alreadyBookmarked'))
+            <div class="alert alert-warning" style="padding: 15px;" role="alert">
+                <p>The artwork has already been bookmarked.</p>
+                <p>Go to your <a href="{{ route('bookmarks.index') }}">bookmarks</a>.</p>
+            </div>
+        @endif
+
         <div id="back">
             <a href="{{ route('artworks.index') }}">Back</a>
         </div>

@@ -20,6 +20,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 
 // bookmarks
 Route::get('/profile/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+Route::post('/profile/bookmarks/delete', [BookmarkController:: class, 'delete'])->name('bookmark.delete');
 Route::post('/artworks/search/{id}/bookmark', [BookmarkController::class, 'store'])->name('bookmark.store');
 
 // edit comments
