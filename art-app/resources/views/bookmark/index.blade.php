@@ -135,7 +135,7 @@
                         @else
                             @foreach ($bookmark->artwork->comments as $comment)
                                 <div class="comment">
-                                    <p>{{ $comment->comment }}</p>
+                                    <p>{{ $comment->comment }} @ {{ $comment->created_at }}</p>
                                     <p>by {{ $comment->user->name }}</p>
                                 </div>
                             @endforeach
@@ -149,7 +149,7 @@
 
     <script>
         function confirmDelete() {
-            return confirm("Are you sure you want to delete this comment?");
+            return confirm("Are you sure you want to remove this artwork?");
         }
     </script>
     

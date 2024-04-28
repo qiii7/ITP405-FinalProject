@@ -164,6 +164,10 @@
             display: flex;
             align-items: center;
         }
+        #results button{
+            margin-top: 15px;
+            margin-bottom: 40px;
+        }
     </style>
 @endsection
 

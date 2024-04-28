@@ -19,10 +19,12 @@ class BookmarkController extends Controller
         $currentUserId = $currentUser->id;
         
         // 1) get the corresponding bookmarks of that user: display info about bookmarked artworks (including comments)
-        $bookmarks = Bookmark::with('artwork.comments')
-                            ->where('user_id', $currentUserId)
-                            ->orderBy('created_at', 'desc')
-                            ->get(); // EAGER LOADING!
+        $bookmarks = Bookmark::with(['artwork.comments' => function($query) {
+            $query->orderBy('created_at', 'desc');
+        }])
+            ->where('user_id', $currentUserId)
+            ->orderBy('created_at', 'desc')
+            ->get(); // EAGER LOADING!
         // dd($bookmarks);
 
         return view('bookmark/index', [

@@ -31,6 +31,6 @@ class RegistrationController extends Controller
         $user->save();
 
         Auth::login($user);
-        return redirect()->route('profile.index');
+        return redirect()->route('artworks.index');
     }
 }
