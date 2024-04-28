@@ -160,8 +160,7 @@
     @else
         <div class="pagination">
             <p>
-                Displaying results for "{{ $query }}"<br>
-                Available restuls: {{ $numOfResults->pagination->total }}
+                Available restults for "{{ $query }}": {{ $numOfResults->pagination->total }}
             </p>
 
             <!-- Previous page link -->
@@ -192,10 +191,15 @@
                 @foreach ($results->data as $result)
                 <li>
                     <div class="info">
-                        <!-- <a href="{{ route('artwork.display', ['id' => $result->id, 'query' => $query ]) }}"> -->
-                            <a href="{{ route('artwork.display', ['id' => $result->id]) }}">
-                            <h2>{{ $result->title }} by <em>{{ $result->artist_title }}</em> ({{ $result->date_end }})</h2>
-                        </a>
+                        <h2>{{ $result->title }} by <em>{{ $result->artist_title }}</em> ({{ $result->date_end }})</h2>
+
+                        <form action="{{ route('artwork.display', ['id' => $result->id]) }}" method="GET">
+                            @csrf
+                            <!-- hide user-query here -->
+                            <input type="hidden" name="user-query" value="{{ $query }}">
+
+                            <button type="submit">see more>>></button>
+                        </form>
                     </div>
                     
                     <div class="image-container">

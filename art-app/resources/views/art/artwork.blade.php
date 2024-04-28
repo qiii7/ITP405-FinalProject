@@ -57,9 +57,13 @@
             </div>
         @endif
 
-        <div id="back">
-            <a href="{{ route('artworks.index') }}">Back</a>
-        </div>
+        <form id="back" action="{{ route('artworks.index') }}" method="GET">
+            @csrf
+            <!-- hide user query here -->
+            <input type="hidden" name="user-query" value="{{ $query }}">
+            
+            <button type="submit">Go Back</button>
+        </form>
 
 
         <!-- id,title,image_id,artist_title,date_end,classification_title,place_of_origin -->

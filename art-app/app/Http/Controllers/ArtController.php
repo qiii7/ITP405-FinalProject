@@ -24,7 +24,7 @@ class ArtController extends Controller
 
         // 2. retrieve user query / cache data
         // https://api.artic.edu/api/v1/artworks/27992?fields=id,title,image_id
-        $term = urlencode($request->input('user-query'));
+        $term = urlencode($request->input('user-query')); // $term ALSO receives input from the form in 'artwork.blade.php'
         $seconds = 60;
         
         // results
@@ -45,6 +45,10 @@ class ArtController extends Controller
         $currentPage = $totalNumObject->pagination->current_page;
         $totalPages = $totalNumObject->pagination->total_pages;
 
+
+        // 4. manually flash old ata
+        $request->flashOnly('user-query');
+
         // just return - no redirect() because the db not processing the user input
         return view("art/artworks", [
             'query' => $term,
@@ -56,7 +60,7 @@ class ArtController extends Controller
     }
 
 
-    public function specificDisplay($artworkId) {
+    public function specificDisplay($artworkId, Request $request) {
 
         // 1) display artwork's specifics
         $cacheKey = "aic-api-$artworkId";
@@ -70,17 +74,16 @@ class ArtController extends Controller
         // 2) get comments, if any (READ)
         $comments = Comment::with(['user'])->where('artwork_id', $artworkId)->orderBy('created_at', 'desc')->get();
 
+        // 3) get user query term to go back
+        $query = $request->input('user-query');
+        // dd($query);
+
         return view('art/artwork', [
             'id' => $artworkId,
             'result' => $artworkInfoObject,
             'comments' => $comments,
+            'query' => $query,
         ]);
     }
 
-
-    
-
-    public function searchExhibition(Request $request) {
-        return view("art/searchExhibition");
-    }
 }
