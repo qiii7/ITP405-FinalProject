@@ -20,7 +20,14 @@ class ArtController extends Controller
     }
 
     public function searchArt(Request $request) {
-        // 1. validation
+        // 1. get a random artwork
+        $randomNumber = rand(50, 67);
+        // dd($randomNumber);
+        $randomObject = Cache::remember("aic-api-$randomNumber", 60, function() use ($randomNumber) {
+            $random = Http::get("https://api.artic.edu/api/v1/artworks/$randomNumber");
+            // dd($random->Object());
+            return $random->Object();
+        });
 
         // 2. retrieve user query / cache data
         // https://api.artic.edu/api/v1/artworks/27992?fields=id,title,image_id
@@ -51,6 +58,7 @@ class ArtController extends Controller
 
         // just return - no redirect() because the db not processing the user input
         return view("art/artworks", [
+            'randomArtwork' => $randomObject,
             'query' => $term,
             'results' => $responseObject,
             'numOfResults' => $totalNumObject,

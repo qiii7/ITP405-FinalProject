@@ -17,7 +17,7 @@
                     <a href="{{ route('artworks.index') }}" class="nav-link">Search</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('profile.index') }}" class="nav-link">Profile</a>
+                    <a href="{{ route('bookmarks.index') }}" class="nav-link">Bookmark</a>
                 </li>
 
                 <li>

@@ -60,9 +60,9 @@
         <form id="back" action="{{ route('artworks.index') }}" method="GET">
             @csrf
             <!-- hide user query here -->
-            <input type="hidden" name="user-query" value="{{ $query }}">
-            
-            <button type="submit">Go Back</button>
+                <input type="hidden" name="user-query" value="{{ $query }}">
+
+                <button type="submit">Go Back</button>
         </form>
 
 

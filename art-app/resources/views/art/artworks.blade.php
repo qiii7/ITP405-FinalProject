@@ -132,6 +132,24 @@
             margin-left: auto;
             margin-right: auto;
         }
+        #random-artwork {
+            display: flex;
+            align-items: center;
+            width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+
+            text-align: center;
+        }
+        #random-image {
+            width: 400px;
+            float: left;
+        }
+        #random-info {
+            width: 400px;
+            float: left;
+            margin-left: 20px;
+        }
     </style>
 @endsection
 
@@ -151,66 +169,81 @@
         </form>
     </div>
 
+    @if (empty($query))
+        <!-- random artwork -->
+        <div id="random-artwork">
+            <div id="random-image">
+                <img src="https://www.artic.edu/iiif/2/{{ $randomArtwork->data->image_id }}/full/843,/0/default.jpg" alt="{{ $randomArtwork->data->title }}">
+            </div>
 
-    @if ($numOfResults->pagination->total == 0)
-        <div id="no-result">
-            <p>No results found for {{ $query }}.</p>
+            <div id="random-info">
+                <p>{{ $randomArtwork->data->title }} by {{ $randomArtwork->data->artist_title }}</p>
+                <p>{{ $randomArtwork->data->date_end  }}</p>
+                <p>Classification: {{ $randomArtwork->data->classification_title  }}</p>
+                <p>Place of Origin: {{ $randomArtwork->data->place_of_origin  }}</p>
+            </div>
         </div>
 
     @else
-        <div class="pagination">
-            <p>
-                Available restults for "{{ $query }}": {{ $numOfResults->pagination->total }}
-            </p>
+        @if ($numOfResults->pagination->total == 0)
+            <div id="no-result">
+                <p>No results found for {{ $query }}.</p>
+            </div>
 
-            <!-- Previous page link -->
-            <a href="{{ $currentPage > 1 ? route('your.route.name', ['page' => $currentPage - 1]) : '#' }}" class="{{ $currentPage == 1 ? 'disabled' : '' }}">&laquo;</a>
+        @else
+            <div class="pagination">
+                <p>
+                    Available restults for "{{ $query }}": {{ $numOfResults->pagination->total }}
+                </p>
 
-            <!-- Loop through each page -->
-            @for ($page = 1; $page <= $totalPages; $page++)
-                <a href="{{ route('your.route.name', ['page' => $page]) }}" @if ($page == $currentPage) class="active" @endif>{{ $page }}</a>
-            @endfor
+                <!-- Previous page link -->
+                <a href="{{ $currentPage > 1 ? route('your.route.name', ['page' => $currentPage - 1]) : '#' }}" class="{{ $currentPage == 1 ? 'disabled' : '' }}">&laquo;</a>
 
-            <!-- Next page link -->
-            <a href="{{ $currentPage < $totalPages ? route('your.route.name', ['page' => $currentPage + 1]) : '#' }}" class="{{ $currentPage == $totalPages ? 'disabled' : '' }}">&raquo;</a>
+                <!-- Loop through each page -->
+                @for ($page = 1; $page <= $totalPages; $page++)
+                    <a href="{{ route('your.route.name', ['page' => $page]) }}" @if ($page == $currentPage) class="active" @endif>{{ $page }}</a>
+                @endfor
+
+                <!-- Next page link -->
+                <a href="{{ $currentPage < $totalPages ? route('your.route.name', ['page' => $currentPage + 1]) : '#' }}" class="{{ $currentPage == $totalPages ? 'disabled' : '' }}">&raquo;</a>
 
 
-            <!-- <a href="#" class="disabled">&laquo;</a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">&raquo;</a> -->
+                <!-- <a href="#" class="disabled">&laquo;</a>
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#">&raquo;</a> -->
 
-        </div>
+            </div>
 
-        <div id="results">
-            <ul>
-                <!-- id,title,image_id,artist_title,date_end,classification_title,place_of_origin -->
-                @foreach ($results->data as $result)
-                <li>
-                    <div class="info">
-                        <h2>{{ $result->title }} by <em>{{ $result->artist_title }}</em> ({{ $result->date_end }})</h2>
+            <div id="results">
+                <ul>
+                    <!-- id,title,image_id,artist_title,date_end,classification_title,place_of_origin -->
+                    @foreach ($results->data as $result)
+                    <li>
+                        <div class="info">
+                            <h2>{{ $result->title }} by <em>{{ $result->artist_title }}</em> ({{ $result->date_end }})</h2>
 
-                        <form action="{{ route('artwork.display', ['id' => $result->id]) }}" method="GET">
-                            @csrf
-                            <!-- hide user-query here -->
-                            <input type="hidden" name="user-query" value="{{ $query }}">
+                            <form action="{{ route('artwork.display', ['id' => $result->id]) }}" method="GET">
+                                @csrf
+                                <!-- hide user-query here -->
+                                <input type="hidden" name="user-query" value="{{ $query }}">
 
-                            <button type="submit">see more>>></button>
-                        </form>
-                    </div>
-                    
-                    <div class="image-container">
-                        <img src="https://www.artic.edu/iiif/2/{{ $result->image_id }}/full/843,/0/default.jpg" alt="{{ $result->title }}">
-                    </img> 
-                    <br><hr>
+                                <button type="submit">see more>>></button>
+                            </form>
+                        </div>
+                        
+                        <div class="image-container">
+                            <img src="https://www.artic.edu/iiif/2/{{ $result->image_id }}/full/843,/0/default.jpg" alt="{{ $result->title }}">
+                        </img> 
+                        <br><hr>
 
-                </li>
-                @endforeach
-            </ul>
-        </div>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     @endif
-    </form>
 @endsection
